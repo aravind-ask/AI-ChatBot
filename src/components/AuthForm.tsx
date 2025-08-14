@@ -34,13 +34,25 @@ export function AuthForm({ mode, onToggleMode }: AuthFormProps) {
     if (mode === "signin") {
       await signInEmailPassword(email, password);
     } else {
-      await signUpEmailPassword(email, password, {
+      const result = await signUpEmailPassword(email, password, {
         displayName: `${firstName} ${lastName}`.trim(),
         metadata: {
           firstName,
           lastName,
         },
       });
+      
+      // After successful registration, toggle to login form and clear fields
+      if (!result.error) {
+        // Clear form fields
+        setFirstName("");
+        setLastName("");
+        setEmail("");
+        setPassword("");
+        
+        // Toggle to login form
+        onToggleMode();
+      }
     }
   };
 
