@@ -1,0 +1,75 @@
+import React, { useState } from 'react'
+import { BrowserRouter as Router, Routes, Route, Navigate } from 'react-router-dom'
+import { NhostProvider } from '@nhost/react'
+import { NhostApolloProvider } from '@nhost/react-apollo'
+import { useAuthenticationStatus } from '@nhost/react'
+import { nhost } from './lib/nhost'
+import { AuthForm } from './components/AuthForm'
+import { Dashboard } from './components/Dashboard'
+import { ChatList } from './components/ChatList'
+import { ChatView } from './components/ChatView'
+import { ProtectedRoute } from './components/ProtectedRoute'
+
+function AuthPage() {
+  const [mode, setMode] = useState<'signin' | 'signup'>('signin')
+  const { isAuthenticated } = useAuthenticationStatus()
+
+  if (isAuthenticated) {
+    return <Navigate to="/dashboard" replace />
+  }
+
+  return (
+    <AuthForm 
+      mode={mode} 
+      onToggleMode={() => setMode(mode === 'signin' ? 'signup' : 'signin')} 
+    />
+  )
+}
+
+function AppRoutes() {
+  return (
+    <Router>
+      <Routes>
+        <Route path="/" element={<Navigate to="/auth" replace />} />
+        <Route path="/auth" element={<AuthPage />} />
+        <Route
+          path="/dashboard"
+          element={
+            <ProtectedRoute>
+              <Dashboard />
+            </ProtectedRoute>
+          }
+        />
+        <Route
+          path="/chats"
+          element={
+            <ProtectedRoute>
+              <ChatList />
+            </ProtectedRoute>
+          }
+        />
+        <Route
+          path="/chat/:chatId"
+          element={
+            <ProtectedRoute>
+              <ChatView />
+            </ProtectedRoute>
+          }
+        />
+        <Route path="*" element={<Navigate to="/auth" replace />} />
+      </Routes>
+    </Router>
+  )
+}
+
+function App() {
+  return (
+    <NhostProvider nhost={nhost}>
+      <NhostApolloProvider nhost={nhost}>
+        <AppRoutes />
+      </NhostApolloProvider>
+    </NhostProvider>
+  )
+}
+
+export default App
