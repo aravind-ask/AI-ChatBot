@@ -1,3 +1,4 @@
+// app.tsx
 import React, { useState } from "react";
 import {
   BrowserRouter as Router,
@@ -13,6 +14,7 @@ import { AuthForm } from "./components/AuthForm";
 import { Dashboard } from "./components/Dashboard";
 import { ChatList } from "./components/ChatList";
 import { ProtectedRoute } from "./components/ProtectedRoute";
+import { Navbar } from "./components/Navbar";
 
 function AuthPage() {
   const [mode, setMode] = useState<"signin" | "signup">("signin");
@@ -23,10 +25,14 @@ function AuthPage() {
   }
 
   return (
-    <AuthForm
-      mode={mode}
-      onToggleMode={() => setMode(mode === "signin" ? "signup" : "signin")}
-    />
+    <div>
+      <div>
+        <AuthForm
+          mode={mode}
+          onToggleMode={() => setMode(mode === "signin" ? "signup" : "signin")}
+        />
+      </div>
+    </div>
   );
 }
 

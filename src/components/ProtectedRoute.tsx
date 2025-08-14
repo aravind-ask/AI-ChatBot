@@ -1,5 +1,6 @@
 import React from "react";
 import { useAuthenticationStatus } from "@nhost/react";
+import { Navigate } from "react-router-dom";
 
 interface ProtectedRouteProps {
   children: React.ReactNode;
@@ -20,7 +21,7 @@ export function ProtectedRoute({ children }: ProtectedRouteProps) {
   }
 
   if (!isAuthenticated) {
-    return null; // This will be handled by the router
+    return <Navigate to="/login" replace />;
   }
 
   return <>{children}</>;
