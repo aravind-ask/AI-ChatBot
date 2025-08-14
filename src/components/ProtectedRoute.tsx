@@ -1,12 +1,12 @@
-import React from 'react'
-import { useAuthenticationStatus } from '@nhost/react'
+import React from "react";
+import { useAuthenticationStatus } from "@nhost/react";
 
 interface ProtectedRouteProps {
-  children: React.ReactNode
+  children: React.ReactNode;
 }
 
 export function ProtectedRoute({ children }: ProtectedRouteProps) {
-  const { isAuthenticated, isLoading } = useAuthenticationStatus()
+  const { isAuthenticated, isLoading } = useAuthenticationStatus();
 
   if (isLoading) {
     return (
@@ -16,12 +16,12 @@ export function ProtectedRoute({ children }: ProtectedRouteProps) {
           <p className="text-gray-600">Loading...</p>
         </div>
       </div>
-    )
+    );
   }
 
   if (!isAuthenticated) {
-    return null // This will be handled by the router
+    return null; // This will be handled by the router
   }
 
-  return <>{children}</>
+  return <>{children}</>;
 }
