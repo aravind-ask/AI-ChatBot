@@ -1,6 +1,6 @@
 import React, { useState } from "react";
 import { useSignInEmailPassword, useSignUpEmailPassword } from "@nhost/react";
-import { Eye, EyeOff, Mail, Lock, User } from "lucide-react";
+import { Eye, EyeOff, Mail, Lock, User, CheckCircle, AlertCircle } from "lucide-react";
 
 interface AuthFormProps {
   mode: "signin" | "signup";
@@ -13,6 +13,8 @@ export function AuthForm({ mode, onToggleMode }: AuthFormProps) {
   const [firstName, setFirstName] = useState("");
   const [lastName, setLastName] = useState("");
   const [showPassword, setShowPassword] = useState(false);
+  const [showVerificationMessage, setShowVerificationMessage] = useState(false);
+  const [verificationEmail, setVerificationEmail] = useState("");
 
   const {
     signInEmailPassword,
@@ -42,19 +44,106 @@ export function AuthForm({ mode, onToggleMode }: AuthFormProps) {
         },
       });
       
-      // After successful registration, toggle to login form and clear fields
+      // After successful registration, show verification message or toggle to login
       if (!result.error) {
-        // Clear form fields
-        setFirstName("");
-        setLastName("");
-        setEmail("");
-        setPassword("");
-        
-        // Toggle to login form
-        onToggleMode();
+        if (result.needsEmailVerification) {
+          // Show email verification message
+          setVerificationEmail(email);
+          setShowVerificationMessage(true);
+          // Clear form fields
+          setFirstName("");
+          setLastName("");
+          setEmail("");
+          setPassword("");
+        } else {
+          // Clear form fields
+          setFirstName("");
+          setLastName("");
+          setEmail("");
+          setPassword("");
+          
+          // Toggle to login form
+          onToggleMode();
+        }
       }
     }
   };
+
+  // If showing verification message, render that instead
+  if (showVerificationMessage) {
+    return (
+      <div className="min-h-screen flex items-center justify-center bg-gradient-to-br from-blue-50 via-white to-purple-50 px-4">
+        <div className="max-w-md w-full">
+          <div className="bg-white/80 backdrop-blur-sm rounded-2xl shadow-xl p-8 border border-white/20">
+            <div className="text-center mb-8">
+              <div className="inline-flex items-center justify-center w-16 h-16 bg-gradient-to-r from-green-500 to-blue-600 rounded-full mb-4">
+                <Mail className="w-8 h-8 text-white" />
+              </div>
+              <h1 className="text-3xl font-bold text-gray-900 mb-2">
+                Check Your Email
+              </h1>
+              <p className="text-gray-600">
+                We've sent a verification link to your email address
+              </p>
+            </div>
+
+            <div className="bg-blue-50 border border-blue-200 rounded-lg p-4 mb-6">
+              <div className="flex items-start">
+                <CheckCircle className="w-5 h-5 text-blue-600 mt-0.5 mr-3 flex-shrink-0" />
+                <div>
+                  <p className="text-sm text-blue-800 font-medium mb-1">
+                    Verification email sent to:
+                  </p>
+                  <p className="text-sm text-blue-700 font-mono bg-blue-100 px-2 py-1 rounded">
+                    {verificationEmail}
+                  </p>
+                </div>
+              </div>
+            </div>
+
+            <div className="space-y-4 text-sm text-gray-600">
+              <div className="flex items-start">
+                <div className="w-6 h-6 bg-blue-100 rounded-full flex items-center justify-center mr-3 mt-0.5 flex-shrink-0">
+                  <span className="text-blue-600 font-semibold text-xs">1</span>
+                </div>
+                <p>Check your email inbox (and spam folder)</p>
+              </div>
+              <div className="flex items-start">
+                <div className="w-6 h-6 bg-blue-100 rounded-full flex items-center justify-center mr-3 mt-0.5 flex-shrink-0">
+                  <span className="text-blue-600 font-semibold text-xs">2</span>
+                </div>
+                <p>Click the verification link in the email</p>
+              </div>
+              <div className="flex items-start">
+                <div className="w-6 h-6 bg-blue-100 rounded-full flex items-center justify-center mr-3 mt-0.5 flex-shrink-0">
+                  <span className="text-blue-600 font-semibold text-xs">3</span>
+                </div>
+                <p>Return here and sign in with your credentials</p>
+              </div>
+            </div>
+
+            <div className="mt-8 space-y-3">
+              <button
+                onClick={() => {
+                  setShowVerificationMessage(false);
+                  onToggleMode();
+                }}
+                className="w-full bg-gradient-to-r from-blue-500 to-purple-600 text-white py-3 px-4 rounded-lg font-semibold hover:from-blue-600 hover:to-purple-700 focus:outline-none focus:ring-2 focus:ring-blue-500 focus:ring-offset-2 transition-all duration-200 transform hover:scale-105"
+              >
+                Continue to Sign In
+              </button>
+              <button
+                onClick={() => setShowVerificationMessage(false)}
+                className="w-full text-gray-600 hover:text-gray-800 font-medium transition-colors"
+              >
+                Back to Sign Up
+              </button>
+            </div>
+          </div>
+        </div>
+      </div>
+    );
+  }
 
   return (
     <div className="min-h-screen flex items-center justify-center bg-gradient-to-br from-blue-50 via-white to-purple-50 px-4">
@@ -160,7 +249,21 @@ export function AuthForm({ mode, onToggleMode }: AuthFormProps) {
 
             {error && (
               <div className="bg-red-50 border border-red-200 text-red-700 px-4 py-3 rounded-lg text-sm">
-                {error.message}
+                <div className="flex items-start">
+                  <AlertCircle className="w-4 h-4 text-red-600 mt-0.5 mr-2 flex-shrink-0" />
+                  <div>
+                    <p className="font-medium">
+                      {error.message.includes('email-not-verified') 
+                        ? 'Email not verified' 
+                        : 'Authentication failed'}
+                    </p>
+                    {error.message.includes('email-not-verified') && (
+                      <p className="text-xs mt-1">
+                        Please check your email and click the verification link before signing in.
+                      </p>
+                    )}
+                  </div>
+                </div>
               </div>
             )}
 
