@@ -68,7 +68,7 @@ export function ChatList() {
   };
 
   return (
-    <div className="min-h-screen bg-gray-900 text-white flex flex-col">
+    <div className="h-screen bg-gray-900 text-white flex flex-col overflow-hidden">
       <Navbar
         onNewChat={() => setShowNewChatForm(true)}
         showSidebarToggle={true}
@@ -79,9 +79,9 @@ export function ChatList() {
       <div className="flex-1 flex overflow-hidden">
         {/* Sidebar */}
         <div
-          className={`w-full sm:w-80 bg-[#151B23] border-r border-gray-700 flex flex-col transition-all duration-300 fixed sm:relative z-30 h-full ${
-            isSidebarOpen ? "translate-x-0" : "-translate-x-full"
-          } sm:translate-x-0`}
+          className={`w-full sm:w-80 bg-[#151B23] border-r border-gray-700 flex flex-col transition-all duration-300 fixed z-30
+            ${isSidebarOpen ? "translate-x-0" : "-translate-x-full"} sm:translate-x-0
+            top-16 left-0 h-[calc(100vh-4rem)]`}
         >
           <div className="p-4">
             <div className="relative">
@@ -157,7 +157,7 @@ export function ChatList() {
         </div>
 
         {/* Main Chat Area */}
-        <div className={`flex-1 flex flex-col overflow-hidden ${isSidebarOpen ? 'hidden sm:flex' : 'flex'}`}>
+        <div className={`flex-1 flex flex-col overflow-hidden ${isSidebarOpen ? 'hidden sm:flex' : 'flex'} md:ml-80`}>
           {chatId ? (
             <ChatView />
           ) : (
