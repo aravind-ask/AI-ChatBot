@@ -68,7 +68,7 @@ export function ChatList() {
   };
 
   return (
-    <div className="h-screen bg-gray-900 text-white flex flex-col overflow-hidden">
+    <div className="min-h-screen bg-gray-900 text-white flex flex-col">
       <Navbar
         onNewChat={() => setShowNewChatForm(true)}
         showSidebarToggle={true}
