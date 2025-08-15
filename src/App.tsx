@@ -14,7 +14,6 @@ import { AuthForm } from "./components/AuthForm";
 import { Dashboard } from "./components/Dashboard";
 import { ChatList } from "./components/ChatList";
 import { ProtectedRoute } from "./components/ProtectedRoute";
-import { Navbar } from "./components/Navbar";
 
 function AuthPage() {
   const [mode, setMode] = useState<"signin" | "signup">("signin");

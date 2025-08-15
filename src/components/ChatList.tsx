@@ -3,7 +3,7 @@ import React, { useState } from "react";
 import { useQuery, useMutation } from "@apollo/client";
 import { useUserData } from "@nhost/react";
 import { useNavigate, useParams } from "react-router-dom";
-import { Search, Plus } from "lucide-react";
+import { Search, Plus, Menu, X } from "lucide-react";
 import { GET_USER_CHATS, INSERT_CHAT } from "../graphql/queries";
 import { ChatView } from "./ChatView";
 import { Navbar } from "./Navbar";
@@ -76,14 +76,36 @@ export function ChatList() {
         isSidebarOpen={isSidebarOpen}
       />
 
+      {/* Mobile Menu Button */}
+      {!isSidebarOpen && (
+        <button
+          onClick={() => setIsSidebarOpen(true)}
+          className="fixed left-4 top-20 z-20 p-2 rounded-lg bg-gray-800/80 backdrop-blur-sm sm:hidden"
+        >
+          <Menu className="w-5 h-5" />
+        </button>
+      )}
+
       <div className="flex-1 flex overflow-hidden">
         {/* Sidebar */}
         <div
           className={`w-full sm:w-80 bg-[#151B23] border-r border-gray-700 flex flex-col transition-all duration-300 fixed z-30
-            ${isSidebarOpen ? "translate-x-0" : "-translate-x-full"} sm:translate-x-0
+            ${
+              isSidebarOpen ? "translate-x-0" : "-translate-x-full"
+            } sm:translate-x-0
             top-16 left-0 h-[calc(100vh-4rem)]`}
         >
-          <div className="p-4">
+          {/* Mobile Close Button */}
+          <div className="sm:hidden flex justify-end p-2">
+            <button
+              onClick={() => setIsSidebarOpen(false)}
+              className="p-2 rounded-lg hover:bg-gray-700/50"
+            >
+              <X className="w-5 h-5" />
+            </button>
+          </div>
+
+          <div className="p-4 pt-0  md:mt-4">
             <div className="relative">
               <Search className="absolute left-3 top-1/2 transform -translate-y-1/2 w-4 h-4 text-gray-400" />
               <input
@@ -96,7 +118,18 @@ export function ChatList() {
             </div>
           </div>
 
-          <div className="flex-1 overflow-y-auto">
+          {/* New Chat Button in Sidebar */}
+          <div className="px-4 pb-2">
+            <button
+              onClick={() => setShowNewChatForm(true)}
+              className="w-full flex items-center justify-center gap-2 px-4 py-2 text-sm bg-gradient-to-r from-blue-500 to-purple-600 text-white rounded-lg hover:from-blue-600 hover:to-purple-700 transition-all mb-2"
+            >
+              <Plus className="w-4 h-4" />
+              New Chat
+            </button>
+          </div>
+
+          <div className="flex-1 overflow-y-auto mx-2">
             {loading ? (
               <div className="text-center py-8">
                 <div className="w-8 h-8 border-4 border-blue-200 border-t-blue-600 rounded-full animate-spin mx-auto mb-4"></div>
@@ -157,7 +190,11 @@ export function ChatList() {
         </div>
 
         {/* Main Chat Area */}
-        <div className={`flex-1 flex flex-col overflow-hidden ${isSidebarOpen ? 'hidden sm:flex' : 'flex'} md:ml-80`}>
+        <div
+          className={`flex-1 flex flex-col overflow-hidden ${
+            isSidebarOpen ? "hidden sm:flex" : "flex"
+          } md:ml-80`}
+        >
           {chatId ? (
             <ChatView />
           ) : (
@@ -190,7 +227,9 @@ export function ChatList() {
       {showNewChatForm && (
         <div className="fixed inset-0 bg-black/70 backdrop-blur-sm flex items-center justify-center z-50 p-4">
           <div className="bg-gray-800 rounded-xl p-6 w-full max-w-md border border-gray-700">
-            <h3 className="text-lg sm:text-xl font-semibold mb-4">Create New Chat</h3>
+            <h3 className="text-lg sm:text-xl font-semibold mb-4">
+              Create New Chat
+            </h3>
             <form onSubmit={handleCreateChat}>
               <div className="mb-4">
                 <label className="block text-sm font-medium text-gray-300 mb-2">
