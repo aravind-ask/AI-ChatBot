@@ -1,6 +1,6 @@
 import React, { useState } from "react";
 import { useSignInEmailPassword, useSignUpEmailPassword } from "@nhost/react";
-import { Eye, EyeOff, Mail, Lock, User, CheckCircle, AlertCircle } from "lucide-react";
+import { Eye, EyeOff, Mail, Lock, User, CheckCircle, AlertCircle, BotMessageSquare } from "lucide-react";
 
 // Helper function to get user-friendly error messages
 const getErrorMessage = (error: any) => {
@@ -186,7 +186,7 @@ export function AuthForm({ mode, onToggleMode }: AuthFormProps) {
         <div className="bg-white/80 backdrop-blur-sm rounded-2xl shadow-xl p-6 sm:p-8 border border-white/20">
           <div className="text-center mb-8">
             <div className="inline-flex items-center justify-center w-16 h-16 bg-gradient-to-r from-blue-500 to-purple-600 rounded-full mb-4">
-              <User className="w-8 h-8 text-white" />
+              <BotMessageSquare className="w-8 h-8 text-white" />
             </div>
             <h1 className="text-2xl sm:text-3xl font-bold text-gray-900 mb-2">
               {mode === "signin" ? "Welcome Back" : "Create Account"}

@@ -1,7 +1,7 @@
 // Dashboard.tsx
 import React from "react";
 import { useNavigate } from "react-router-dom";
-import { MessageCircle } from "lucide-react";
+import { BotMessageSquare, MessageCircle } from "lucide-react";
 import { Navbar } from "./Navbar";
 
 export function Dashboard() {
@@ -18,10 +18,10 @@ export function Dashboard() {
       <main className="flex-1 flex items-center justify-center p-4 sm:p-6">
         <div className="text-center max-w-2xl">
           <div className="w-16 h-16 sm:w-20 sm:h-20 bg-gradient-to-r from-blue-500 to-purple-600 rounded-xl flex items-center justify-center mx-auto mb-6 sm:mb-8">
-            <MessageCircle className="w-10 h-10 text-white" />
+            <BotMessageSquare className="w-10 h-10 text-white" />
           </div>
           <h1 className="text-2xl sm:text-4xl md:text-5xl font-bold mb-4 sm:mb-6 bg-clip-text text-transparent bg-gradient-to-r from-blue-400 to-purple-500 px-4">
-            Welcome to Your AI Assistant
+            Welcome to H.O.M.E.R ai
           </h1>
           <p className="text-base sm:text-lg text-gray-300 mb-8 sm:mb-10 max-w-lg mx-auto px-4">
             Ask anything, from solving problems to sparking creativity. Your AI

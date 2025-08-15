@@ -3,14 +3,13 @@ import React, { useState, useEffect, useRef } from "react";
 import { useQuery, useMutation, useSubscription } from "@apollo/client";
 import { useUserData } from "@nhost/react";
 import { useParams, useNavigate } from "react-router-dom";
-import { ArrowLeft, Send, Bot, User, Clock } from "lucide-react";
+import {  Send, Bot, Clock, BotMessageSquare } from "lucide-react";
 import {
   GET_CHAT_BY_ID,
   SUBSCRIBE_TO_MESSAGES,
   INSERT_MESSAGE,
   SEND_MESSAGE_TO_BOT,
 } from "../graphql/queries";
-import { Navbar } from "./Navbar";
 
 interface Message {
   id: string;
@@ -166,9 +165,9 @@ export function ChatView() {
                     >
                       {message.is_bot && (
                         <div className="flex items-center mb-2">
-                          <Bot className="w-4 h-4 mr-2 text-teal-400" />
+                          <BotMessageSquare className="w-4 h-4 mr-2 text-teal-400" />
                           <span className="text-xs font-medium text-gray-300">
-                            AI Assistant
+                            H.O.M.E.R
                           </span>
                         </div>
                       )}
@@ -209,7 +208,7 @@ export function ChatView() {
         <div className="p-3 sm:p-4">
           <form
             onSubmit={handleSendMessage}
-            className="flex items-end space-x-2 sm:space-x-3 bg-gray-800 rounded-xl p-3"
+            className="flex items-center space-x-2 sm:space-x-3 bg-gray-800 rounded-xl p-3"
           >
             <div className="flex-1">
               <textarea
